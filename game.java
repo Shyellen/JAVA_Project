@@ -19,18 +19,20 @@ public class game extends JFrame implements ActionListener
 	public static final int OBSTACLE_HEIGHT = 50;
 	public static final int PLAYER_WIDTH = 50;
 	public static final int PLAYER_HEIGHT = 50;
-	public static final int MOVE = 30;
+	public static final int MOVE = 20;
 	public static int PLAYER_X = 10;
-	public static int PLAYER_Y = 303;
+	public static int PLAYER_Y = 350-PLAYER_HEIGHT;
 	public static int OBSTACLE_X = 200;
-	public static int OBSTACLE_Y = 40;
+	public static int OBSTACLE_Y = 0;
+	public static long period = 500;
 	public static int point = 0;
+	
 	public JButton leftButton;
 	public JButton rightButton;
-	public static long period = 500;
 	
 	public boolean start = false;
 	public boolean end = false;
+	
 	
 	public static void main(String[] args) {
 		game play = new game();
@@ -41,9 +43,9 @@ public class game extends JFrame implements ActionListener
 	{
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("MY GAME"); 
-        setLayout(new BorderLayout( ));
-        getContentPane( ).setBackground(Color.BLACK);
+        setTitle("장애물 피하기"); 
+        setLayout(new BorderLayout());
+        getContentPane().setBackground(Color.BLACK);
         
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
@@ -60,24 +62,22 @@ public class game extends JFrame implements ActionListener
 	}
 	
 	public void playing() {
-		
-		//player 좌표랑 obstacle 좌표가 겹쳤을 때 상황 구현, 점수는 어떻게 할지 모르겠음.
 		double randomValue = Math.random();
-		OBSTACLE_X = (int)(randomValue * 340)+0;
+		OBSTACLE_X = (int)(randomValue * 340)+10;
 		
 		Timer m_timer = new Timer();
 		TimerTask m_task = new TimerTask() {
 			public void run() {
-				double randomValue = Math.random();
-				if(PLAYER_X > OBSTACLE_X-25 && PLAYER_X < OBSTACLE_X+25 && PLAYER_Y < OBSTACLE_Y) {
+				if((PLAYER_Y <= OBSTACLE_Y+50)
+						&&(((OBSTACLE_X+50>=PLAYER_X)&&(OBSTACLE_X<=PLAYER_X)||(PLAYER_X+50 >= OBSTACLE_X)&&(OBSTACLE_X>=PLAYER_X)))) {
 					m_timer.cancel();
 					start = false;
 					end = true;
 					repaint();
 				}
 				else if(OBSTACLE_Y >= 300) {
-					randomValue = Math.random();
-					OBSTACLE_X = (int)(randomValue * 340)+0;
+					double randomValue = Math.random();
+					OBSTACLE_X = (int)(randomValue * 340)+10;
 					OBSTACLE_Y = 0;
 					period -= 25;
 					point += 25;
@@ -88,7 +88,7 @@ public class game extends JFrame implements ActionListener
 					repaint();
 				}
 				else {
-					OBSTACLE_Y += MOVE;
+					OBSTACLE_Y += 30;
 					repaint();
 				}
 			}
@@ -102,14 +102,12 @@ public class game extends JFrame implements ActionListener
 
         if (actionCommand.equals("끝내기"))
             System.exit(0);
-        else if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) {
-        	//초기값으로 변경.
+        else if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) { //초기값으로 변경.
         	leftButton.setText("<=");
         	rightButton.setText("=>");
         	PLAYER_X = 10;
-        	PLAYER_Y = 303;
-        	OBSTACLE_X = 200;
-        	OBSTACLE_Y = 40;
+        	OBSTACLE_X = 10;
+        	OBSTACLE_Y = 0;
         	point = 0;
         	period = 500;
         	start = true;
@@ -118,14 +116,14 @@ public class game extends JFrame implements ActionListener
         	playing();
         }
         else if ((actionCommand.equals("=>"))) {
-        	if(PLAYER_X > 320)
+        	if(PLAYER_X >= 320)
         		PLAYER_X = 340;
         	else
         		PLAYER_X += MOVE;	
             repaint();
         }
         else if ((actionCommand.equals("<="))) {
-        	if(PLAYER_X < MOVE+10)
+        	if(PLAYER_X <= MOVE+10)
         		PLAYER_X = 10;
         	else
         		PLAYER_X -= MOVE;	
