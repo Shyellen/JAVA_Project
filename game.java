@@ -22,7 +22,8 @@ public class game extends JFrame implements ActionListener
 	public static final int MOVE = 20;
 	public static int PLAYER_X = 10;
 	public static int PLAYER_Y = 350-PLAYER_HEIGHT;
-	public static int OBSTACLE_X = 200;
+	public static int OBSTACLE_X1 = 30;
+	public static int OBSTACLE_X2 = 200;
 	public static int OBSTACLE_Y = 0;
 	public static long period = 500;
 	public static int point = 0;
@@ -63,13 +64,18 @@ public class game extends JFrame implements ActionListener
 	
 	public void playing() {
 		double randomValue = Math.random();
-		OBSTACLE_X = (int)(randomValue * 340)+10;
+		OBSTACLE_X1 = (int)(randomValue * 340)+10;
+		while((OBSTACLE_X1 - OBSTACLE_X2 < 70 && OBSTACLE_X1 - OBSTACLE_X2 > 0)|| (OBSTACLE_X1 - OBSTACLE_X2 < 70 && OBSTACLE_X2 - OBSTACLE_X1 < 70)) {
+			randomValue = Math.random();
+			OBSTACLE_X2 = (int)(randomValue * 340)+10;
+		}
 		
 		Timer m_timer = new Timer();
 		TimerTask m_task = new TimerTask() {
 			public void run() {
 				if((PLAYER_Y <= OBSTACLE_Y+50)
-						&&(((OBSTACLE_X+50>=PLAYER_X)&&(OBSTACLE_X<=PLAYER_X)||(PLAYER_X+50 >= OBSTACLE_X)&&(OBSTACLE_X>=PLAYER_X)))) {
+						&&((((OBSTACLE_X1+50>=PLAYER_X)&&(OBSTACLE_X1<=PLAYER_X)||(PLAYER_X+50 >= OBSTACLE_X1)&&(OBSTACLE_X1>=PLAYER_X)))
+						|| (((OBSTACLE_X2+50>=PLAYER_X)&&(OBSTACLE_X2<=PLAYER_X)||(PLAYER_X+50 >= OBSTACLE_X2)&&(OBSTACLE_X2>=PLAYER_X))))) {
 					m_timer.cancel();
 					start = false;
 					end = true;
@@ -77,7 +83,9 @@ public class game extends JFrame implements ActionListener
 				}
 				else if(OBSTACLE_Y >= 300) {
 					double randomValue = Math.random();
-					OBSTACLE_X = (int)(randomValue * 340)+10;
+					OBSTACLE_X1 = (int)(randomValue * 340)+10;
+					randomValue = Math.random();
+					OBSTACLE_X2 = (int)(randomValue * 340)+10;
 					OBSTACLE_Y = 0;
 					period -= 25;
 					point += 25;
@@ -106,7 +114,7 @@ public class game extends JFrame implements ActionListener
         	leftButton.setText("<=");
         	rightButton.setText("=>");
         	PLAYER_X = 10;
-        	OBSTACLE_X = 10;
+        	OBSTACLE_X1 = 10;
         	OBSTACLE_Y = 0;
         	point = 0;
         	period = 500;
@@ -140,7 +148,10 @@ public class game extends JFrame implements ActionListener
              g.fillRect(PLAYER_X, PLAYER_Y, PLAYER_WIDTH, PLAYER_HEIGHT);
              
         	g.setColor(Color.RED);
-        	g.fillRect(OBSTACLE_X, OBSTACLE_Y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
+        	g.fillRect(OBSTACLE_X1, OBSTACLE_Y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
+        	g.fillRect(OBSTACLE_X2, OBSTACLE_Y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
+        	
+        	
         	
         	g.setColor(Color.BLUE);
             g.drawString(point+"Á¡", 30, 375);
