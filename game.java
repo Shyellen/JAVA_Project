@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Color;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class game extends JFrame implements ActionListener
 {
@@ -25,8 +27,10 @@ public class game extends JFrame implements ActionListener
 	public static int point = 0;
 	public JButton leftButton;
 	public JButton rightButton;
-	public static long delay = 500; 
+	public static long period = 500;
+	
 	public boolean start = false;
+	public boolean end = false;
 	
 	public static void main(String[] args) {
 		game play = new game();
@@ -56,8 +60,40 @@ public class game extends JFrame implements ActionListener
 	}
 	
 	public void playing() {
-		//obstacle이 움직이는 거, player 좌표랑 obstacle 좌표가 겹쳤을 때 상황 구현
-		//OBSTACLE_X는 랜덤생성.(10~340)
+		
+		//player 좌표랑 obstacle 좌표가 겹쳤을 때 상황 구현, 점수는 어떻게 할지 모르겠음.
+		double randomValue = Math.random();
+		OBSTACLE_X = (int)(randomValue * 340)+0;
+		
+		Timer m_timer = new Timer();
+		TimerTask m_task = new TimerTask() {
+			public void run() {
+				double randomValue = Math.random();
+				if(PLAYER_X > OBSTACLE_X-25 && PLAYER_X < OBSTACLE_X+25 && PLAYER_Y < OBSTACLE_Y) {
+					m_timer.cancel();
+					start = false;
+					end = true;
+					repaint();
+				}
+				else if(OBSTACLE_Y >= 300) {
+					randomValue = Math.random();
+					OBSTACLE_X = (int)(randomValue * 340)+0;
+					OBSTACLE_Y = 0;
+					period -= 25;
+					point += 25;
+					if(period <= 75)
+						period = 50;
+					m_timer.cancel();
+					playing();
+					repaint();
+				}
+				else {
+					OBSTACLE_Y += MOVE;
+					repaint();
+				}
+			}
+		};
+		m_timer.schedule(m_task, 300, period);
 	}
 	
 	public void actionPerformed(ActionEvent e)
@@ -75,10 +111,11 @@ public class game extends JFrame implements ActionListener
         	OBSTACLE_X = 200;
         	OBSTACLE_Y = 40;
         	point = 0;
-        	delay = 500;
+        	period = 500;
         	start = true;
+        	end = false;
         	repaint();
-        	//playing();
+        	playing();
         }
         else if ((actionCommand.equals("=>"))) {
         	if(PLAYER_X > 320)
@@ -107,8 +144,14 @@ public class game extends JFrame implements ActionListener
         	g.setColor(Color.RED);
         	g.fillRect(OBSTACLE_X, OBSTACLE_Y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
         	
+        	g.setColor(Color.BLUE);
+            g.drawString(point+"점", 30, 375);
+        }
+        else if (end == true) {
         	g.setColor(Color.WHITE);
             g.drawString(point+"점", 10, 50);
+            leftButton.setText("재시작");
+            rightButton.setText("끝내기");
         }
     }
 }
