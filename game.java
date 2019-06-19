@@ -1,5 +1,5 @@
 
-import java.io.File;
+import java.io.File; // 파일 불러오기
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,12 +15,12 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioInputStream; // 브금 삽입
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
-import java.awt.event.MouseEvent;
+import java.awt.event.MouseEvent; // 마우스 이벤트 -> 버튼 마우스오버하면 바뀌는걸 만들기 위해 삽입
 import java.awt.event.MouseListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.KeyEvent; // key event (키보드 왼/오른쪽 키로 움직일수있음)
 import java.awt.event.KeyListener;
 
 
@@ -50,9 +50,9 @@ public class game extends JFrame implements ActionListener
 	public boolean start = false; //게임 시작 상태
 	public boolean end = false; //게임 오버 상태
 	
-	public JLabel title;
+	public JLabel title; // title에 title 이미지 삽입, 게임 시작 후 지우기위해 위로 뺌
 	
-	public static final int POINT_SIZE = 40;
+	public static final int POINT_SIZE = 40; // 게임 오버 페이지
 	private String theText = "GAME OVER";
     private Color penColor = Color.RED;
     private Font fontObject1 = 
@@ -74,26 +74,28 @@ public class game extends JFrame implements ActionListener
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.BLACK);
         
-        ImageIcon ic1  = new ImageIcon("title.png");
-        title  = new JLabel(ic1);
+        setResizable(false); // 창 크기 고정
+        
+        ImageIcon ic1  = new ImageIcon("title.png"); // title 이미지를 image icon으로 가져옴,
+        title  = new JLabel(ic1); // 위에 빼놓은 title 라벨에 집어넣음
   
         add(title, BorderLayout.CENTER);
         
        JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         
-        MyMouseListener listener = new MyMouseListener();    
-        key lis = new key(); 
+        MyMouseListener listener = new MyMouseListener();    // mouselistner를 사용하기위해 추가
+        key lis = new key();  // keylistner 사용위해 추가
         
         addKeyListener(lis);
         
         leftButton = new JButton("게임시작");
         leftButton.addActionListener(this);
         leftButton.addMouseListener(listener);
-        leftButton.addKeyListener(lis);
-        leftButton.setBackground(Color.BLACK);
-        leftButton.setForeground(Color.WHITE);
-        leftButton.setBorderPainted(false);
+        leftButton.addKeyListener(lis); // 안넣어주면 keylistner 가 안돌아감.... 포커스 문제인듯
+        leftButton.setBackground(Color.BLACK); //초기 컬러설정
+        leftButton.setForeground(Color.WHITE); // 글자색
+        leftButton.setBorderPainted(false); // 버튼 테두리 지움
         
         buttonPanel.add(leftButton);
         
@@ -146,7 +148,7 @@ public class game extends JFrame implements ActionListener
 					if(period <= 50) //최저 속도는 50
 						period = 50;
 					point += 25; //점수 상승
-					if(bestScore < point)
+					if(bestScore < point) // 실시간으로 최고기록 반영
 						bestScore = point;
 					m_timer.cancel(); //타이머 중지
 					repaint();
@@ -167,23 +169,23 @@ public class game extends JFrame implements ActionListener
         String actionCommand = e.getActionCommand( );
 
         if (actionCommand.equals("끝내기")) {
-            int result = JOptionPane.showConfirmDialog(null, "종료하시겠습니까?", "End?", JOptionPane.YES_NO_OPTION);
-            if(result == JOptionPane.CLOSED_OPTION);
+            int result = JOptionPane.showConfirmDialog(null, "종료하시겠습니까?", "End?", JOptionPane.YES_NO_OPTION); // 팝업창 띄우기
+            if(result == JOptionPane.CLOSED_OPTION);// yes면 종료, 나머지는 아무 일 없음
             else if (result == JOptionPane.YES_OPTION)
             	System.exit(0);
             else if(result == JOptionPane.NO_OPTION);
         }
         if (actionCommand.equals("게임시작"))
         {
-        	remove(title);
+        	remove(title); // 처음 타이틀 이미지가 들어있는 라벨 지움
         	
-        	ImageIcon ic2  = new ImageIcon("play.png");
-            JLabel back  = new JLabel(ic2);
+        	ImageIcon ic2  = new ImageIcon("play.png"); // 플레이 중 백그라운드 만들기.
+            JLabel back  = new JLabel(ic2); // 저기 아래 게임시작||재시작에 넣으면 투명도가 겹쳐져서 따로 게임시작에만 넣어줌
       
             add(back, BorderLayout.CENTER);
         }
         if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) { //초기값으로 변경.
-        	try
+        	try // 시작할때 브금 띠롱
 			{
 				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("341695__projectsu012__coins-1.wav"));
 		            Clip clip = AudioSystem.getClip();
@@ -253,7 +255,7 @@ public class game extends JFrame implements ActionListener
         }
     }
 	
-	class MyMouseListener implements MouseListener{
+	class MyMouseListener implements MouseListener{ // 마우스리스너
 
 	    @Override
 	    public void mouseClicked(MouseEvent e) {
@@ -268,33 +270,33 @@ public class game extends JFrame implements ActionListener
 	    }
 
 	    @Override
-	    public void mouseEntered(MouseEvent e) {
+	    public void mouseEntered(MouseEvent e) { //아래 버튼들에 마우스를 가져다대면 배경 흰색, 글자 검정색으로 바뀜
 	        JButton b = (JButton)e.getSource();
 	        b.setBackground(Color.WHITE);
 	        b.setForeground(Color.BLACK);
 	    }
 
 	    @Override
-	    public void mouseExited(MouseEvent e) {
+	    public void mouseExited(MouseEvent e) { // 다시 떼면 초기치로 돌아감
 	        JButton b = (JButton)e.getSource();
 	        b.setBackground(Color.BLACK);
 	        b.setForeground(Color.WHITE);
 	    }
 	}
 	
-	class key implements KeyListener{
+	class key implements KeyListener{ // 키리스너, 키보드에서 입력받아서
 
         @Override
         public void keyPressed(KeyEvent e) {
         	if(start == true) {
-        		if( e.getKeyCode() == 39 ) {
+        		if( e.getKeyCode() == 39 ) { // 오른쪽 (39), =>키와 동일
         			if(PLAYER_X >= WINDOW_WIDTH - 10 - PLAYER_WIDTH - MOVE)
         				PLAYER_X = WINDOW_WIDTH - 10 - PLAYER_WIDTH;
         			else
         				PLAYER_X += MOVE;	
         			repaint();
         		}
-        		if( e.getKeyCode() == 37 ) {
+        		if( e.getKeyCode() == 37 ) { // 왼쪽(37), <=키와 동일
         			if(PLAYER_X <= MOVE+10)
                 		PLAYER_X = 10;
                 	else
