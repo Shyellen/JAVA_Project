@@ -46,7 +46,7 @@ public class game extends JFrame implements ActionListener
 
 	
 	public static void main(String[] args) {
-		newgame play = new newgame();
+		game play = new game();
 		play.setVisible(true);
 	}
 	
