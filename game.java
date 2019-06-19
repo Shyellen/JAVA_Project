@@ -311,22 +311,7 @@ public class game extends JFrame implements ActionListener
 
         @Override
         public void keyTyped(KeyEvent e) {
-        	if(start == true) {
-        		if( e.getKeyCode() == 39 ) {
-        			if(PLAYER_X >= WINDOW_WIDTH - 10 - PLAYER_WIDTH - MOVE)
-        				PLAYER_X = WINDOW_WIDTH - 10 - PLAYER_WIDTH;
-        			else
-        				PLAYER_X += MOVE;	
-        			repaint();
-        		}
-        		if( e.getKeyCode() == 37 ) {
-        			if(PLAYER_X <= MOVE+10)
-                		PLAYER_X = 10;
-                	else
-                		PLAYER_X -= MOVE;	
-                    repaint();
-        		}
-        	}
+        	
         }
                     
             
