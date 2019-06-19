@@ -28,6 +28,7 @@ public class game extends JFrame implements ActionListener
 	public static int OBSTACLE_Y = 0; // OBSTACLE_Y <= PLAYER_Y
 	public static long period = 500;
 	public static int point = 0;
+	public static int bestScore = 0; 
 	
 	public JButton leftButton;
 	public JButton rightButton;
@@ -79,6 +80,8 @@ public class game extends JFrame implements ActionListener
 						&&((((OBSTACLE_X1+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X1<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X1)&&(OBSTACLE_X1>=PLAYER_X)))
 						|| (((OBSTACLE_X2+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X2<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X2)&&(OBSTACLE_X2>=PLAYER_X))))) {
 					m_timer.cancel();
+					if(bestScore < point)
+						bestScore = point;
 					start = false;
 					end = true;
 					repaint();
@@ -154,6 +157,7 @@ public class game extends JFrame implements ActionListener
         else if (end == true) {
         	g.setColor(Color.WHITE);
             g.drawString("이번점수: " + point+"점", 10, 50);
+            g.drawString("최고점수: " + bestScore+"점", 10, 80);
             leftButton.setText("재시작");
             rightButton.setText("끝내기");
         }
