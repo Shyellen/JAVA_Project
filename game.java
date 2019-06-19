@@ -1,5 +1,6 @@
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -39,7 +40,7 @@ public class game extends JFrame implements ActionListener
 
 	
 	public static void main(String[] args) {
-		game play = new game();
+		newgame play = new newgame();
 		play.setVisible(true);
 	}
 	
@@ -47,7 +48,8 @@ public class game extends JFrame implements ActionListener
 	{
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("장애물 피하기"); 
+        setTitle("장애물 피하기");
+        setLocation(500,400);
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.BLACK);
         
@@ -109,8 +111,13 @@ public class game extends JFrame implements ActionListener
     {
         String actionCommand = e.getActionCommand( );
 
-        if (actionCommand.equals("끝내기"))
-            System.exit(0);
+        if (actionCommand.equals("끝내기")) {
+            int result = JOptionPane.showConfirmDialog(null, "종료하시겠습니까?", "End?", JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.CLOSED_OPTION);
+            else if (result == JOptionPane.YES_OPTION)
+            	System.exit(0);
+            else if(result == JOptionPane.NO_OPTION);
+        }
         else if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) { //초기값으로 변경.
         	leftButton.setText("<=");
         	rightButton.setText("=>");
