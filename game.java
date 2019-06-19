@@ -20,6 +20,8 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
 
@@ -80,27 +82,25 @@ public class game extends JFrame implements ActionListener
        JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         
-        /*leftButton = new JButton("게임시작");
-        leftButton.addActionListener(this);
-        buttonPanel.add(leftButton);
+        MyMouseListener listener = new MyMouseListener();    
+        key lis = new key(); 
         
-        rightButton = new JButton("끝내기");
-        rightButton.addActionListener(this);
-        buttonPanel.add(rightButton);*/
-        
-        MyMouseListener listener = new MyMouseListener();        
+        addKeyListener(lis);
         
         leftButton = new JButton("게임시작");
         leftButton.addActionListener(this);
         leftButton.addMouseListener(listener);
+        leftButton.addKeyListener(lis);
         leftButton.setBackground(Color.BLACK);
         leftButton.setForeground(Color.WHITE);
         leftButton.setBorderPainted(false);
+        
         buttonPanel.add(leftButton);
         
         rightButton = new JButton("끝내기");
         rightButton.addActionListener(this);
         rightButton.addMouseListener(listener);
+        rightButton.addKeyListener(lis);
         rightButton.setBackground(Color.BLACK);
         rightButton.setForeground(Color.WHITE);
         rightButton.setBorderPainted(false);
@@ -163,6 +163,7 @@ public class game extends JFrame implements ActionListener
 	
 	public void actionPerformed(ActionEvent e)
     {
+
         String actionCommand = e.getActionCommand( );
 
         if (actionCommand.equals("끝내기")) {
@@ -280,4 +281,39 @@ public class game extends JFrame implements ActionListener
 	        b.setForeground(Color.WHITE);
 	    }
 	}
+	
+	class key implements KeyListener{
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+        	if(start == true) {
+        		if( e.getKeyCode() == 39 ) {
+        			if(PLAYER_X >= WINDOW_WIDTH - 10 - PLAYER_WIDTH - MOVE)
+        				PLAYER_X = WINDOW_WIDTH - 10 - PLAYER_WIDTH;
+        			else
+        				PLAYER_X += MOVE;	
+        			repaint();
+        		}
+        		if( e.getKeyCode() == 37 ) {
+        			if(PLAYER_X <= MOVE+10)
+                		PLAYER_X = 10;
+                	else
+                		PLAYER_X -= MOVE;	
+                    repaint();
+        		}
+        	}
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            // TODO Auto-generated method stub
+        }
+                    
+            
+    }       
 }
