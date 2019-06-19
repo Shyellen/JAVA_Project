@@ -72,7 +72,7 @@ public class game extends JFrame implements ActionListener
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.BLACK);
         
-        ImageIcon ic1  = new ImageIcon("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\title.png");
+        ImageIcon ic1  = new ImageIcon("title.png");
         title  = new JLabel(ic1);
   
         add(title, BorderLayout.CENTER);
@@ -127,7 +127,7 @@ public class game extends JFrame implements ActionListener
 						|| (((OBSTACLE_X2+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X2<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X2)&&(OBSTACLE_X2>=PLAYER_X))))) {
 					try
 					{
-						 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("C:\\Users\\Owner\\Downloads\\\\자바\\Java_Project\\src\\333785__projectsu012__8-bit-failure-sound.wav"));
+						 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("333785__projectsu012__8-bit-failure-sound.wav"));
 				            Clip clip = AudioSystem.getClip();
 				            clip.open(stream);
 				            clip.start();
@@ -176,7 +176,7 @@ public class game extends JFrame implements ActionListener
         {
         	remove(title);
         	
-        	ImageIcon ic2  = new ImageIcon("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\play.png");
+        	ImageIcon ic2  = new ImageIcon("play.png");
             JLabel back  = new JLabel(ic2);
       
             add(back, BorderLayout.CENTER);
@@ -184,7 +184,7 @@ public class game extends JFrame implements ActionListener
         if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) { //초기값으로 변경.
         	try
 			{
-				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\341695__projectsu012__coins-1.wav"));
+				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("341695__projectsu012__coins-1.wav"));
 		            Clip clip = AudioSystem.getClip();
 		            clip.open(stream);
 		            clip.start();
