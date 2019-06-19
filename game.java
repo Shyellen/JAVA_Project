@@ -1,13 +1,16 @@
 
 import java.io.File;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.util.Timer;
@@ -15,6 +18,8 @@ import java.util.TimerTask;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 
 
@@ -43,7 +48,15 @@ public class game extends JFrame implements ActionListener
 	public boolean start = false; //게임 시작 상태
 	public boolean end = false; //게임 오버 상태
 	
-
+	public JLabel title;
+	
+	public static final int POINT_SIZE = 40;
+	private String theText = "GAME OVER";
+    private Color penColor = Color.RED;
+    private Font fontObject1 = 
+                      new Font("SansSerif", Font.PLAIN, POINT_SIZE);
+    private Font fontObject2 = 
+            new Font("돋움", Font.PLAIN, 20);
 	
 	public static void main(String[] args) {
 		game play = new game();
@@ -59,16 +72,41 @@ public class game extends JFrame implements ActionListener
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.BLACK);
         
-        JPanel buttonPanel = new JPanel();
+        ImageIcon ic1  = new ImageIcon("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\title.png");
+        title  = new JLabel(ic1);
+  
+        add(title, BorderLayout.CENTER);
+        
+       JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         
-        leftButton = new JButton("게임시작");
+        /*leftButton = new JButton("게임시작");
         leftButton.addActionListener(this);
         buttonPanel.add(leftButton);
         
         rightButton = new JButton("끝내기");
         rightButton.addActionListener(this);
+        buttonPanel.add(rightButton);*/
+        
+        MyMouseListener listener = new MyMouseListener();        
+        
+        leftButton = new JButton("게임시작");
+        leftButton.addActionListener(this);
+        leftButton.addMouseListener(listener);
+        leftButton.setBackground(Color.BLACK);
+        leftButton.setForeground(Color.WHITE);
+        leftButton.setBorderPainted(false);
+        buttonPanel.add(leftButton);
+        
+        rightButton = new JButton("끝내기");
+        rightButton.addActionListener(this);
+        rightButton.addMouseListener(listener);
+        rightButton.setBackground(Color.BLACK);
+        rightButton.setForeground(Color.WHITE);
+        rightButton.setBorderPainted(false);
         buttonPanel.add(rightButton);
+        
+        buttonPanel.setBackground(Color.BLACK);
         
         add(buttonPanel, BorderLayout.SOUTH);
 	}
@@ -89,7 +127,7 @@ public class game extends JFrame implements ActionListener
 						|| (((OBSTACLE_X2+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X2<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X2)&&(OBSTACLE_X2>=PLAYER_X))))) {
 					try
 					{
-						 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("333785__projectsu012__8-bit-failure-sound.wav"));
+						 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("C:\\Users\\Owner\\Downloads\\\\자바\\Java_Project\\src\\333785__projectsu012__8-bit-failure-sound.wav"));
 				            Clip clip = AudioSystem.getClip();
 				            clip.open(stream);
 				            clip.start();
@@ -98,8 +136,6 @@ public class game extends JFrame implements ActionListener
 					{
 					} 
 					m_timer.cancel();
-					if(bestScore < point)
-						bestScore = point;
 					start = false;
 					end = true;
 					repaint();
@@ -110,6 +146,8 @@ public class game extends JFrame implements ActionListener
 					if(period <= 50) //최저 속도는 50
 						period = 50;
 					point += 25; //점수 상승
+					if(bestScore < point)
+						bestScore = point;
 					m_timer.cancel(); //타이머 중지
 					repaint();
 					playing(); //재시작
@@ -134,17 +172,27 @@ public class game extends JFrame implements ActionListener
             	System.exit(0);
             else if(result == JOptionPane.NO_OPTION);
         }
-        else if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) { //초기값으로 변경.
+        if (actionCommand.equals("게임시작"))
+        {
+        	remove(title);
+        	
+        	ImageIcon ic2  = new ImageIcon("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\play.png");
+            JLabel back  = new JLabel(ic2);
+      
+            add(back, BorderLayout.CENTER);
+        }
+        if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) { //초기값으로 변경.
         	try
 			{
-				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("341695__projectsu012__coins-1.wav"));
+				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\341695__projectsu012__coins-1.wav"));
 		            Clip clip = AudioSystem.getClip();
 		            clip.open(stream);
 		            clip.start();
 			}
 			catch (Exception ex)
 			{
-			} 
+			}
+      
         	leftButton.setText("<=");
         	rightButton.setText("=>");
         	PLAYER_X = 10;
@@ -186,13 +234,50 @@ public class game extends JFrame implements ActionListener
         	
         	g.setColor(Color.BLUE);
             g.drawString(point+"점", 30, WINDOW_HEIGHT-25);
+            
+            g.setColor(Color.BLUE);
+            g.drawString("BEST SCORE: " + bestScore+"점", 270, WINDOW_HEIGHT-25);
         }
         else if (end == true) {
+        	super.paint(g);
+            g.setFont(fontObject1);
+            g.setColor(penColor);
+            g.drawString(theText, 80, 200);
         	g.setColor(Color.WHITE);
-            g.drawString("이번점수: " + point+"점", 10, 50);
-            g.drawString("최고점수: " + bestScore+"점", 10, 80);
+        	g.setFont(fontObject2);
+            g.drawString("이번점수: " + point+"점", 135, 240);
+            g.drawString("최고점수: " + bestScore+"점", 135, 260);
             leftButton.setText("재시작");
             rightButton.setText("끝내기");
         }
     }
+	
+	class MyMouseListener implements MouseListener{
+
+	    @Override
+	    public void mouseClicked(MouseEvent e) {
+	    }
+
+	    @Override
+	    public void mousePressed(MouseEvent e) {
+	    }
+
+	    @Override
+	    public void mouseReleased(MouseEvent e) {
+	    }
+
+	    @Override
+	    public void mouseEntered(MouseEvent e) {
+	        JButton b = (JButton)e.getSource();
+	        b.setBackground(Color.WHITE);
+	        b.setForeground(Color.BLACK);
+	    }
+
+	    @Override
+	    public void mouseExited(MouseEvent e) {
+	        JButton b = (JButton)e.getSource();
+	        b.setBackground(Color.BLACK);
+	        b.setForeground(Color.WHITE);
+	    }
+	}
 }
