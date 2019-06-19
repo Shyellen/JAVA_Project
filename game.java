@@ -1,4 +1,5 @@
 
+import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -11,6 +12,11 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.AudioSystem;
+
+
 
 public class game extends JFrame implements ActionListener
 {
@@ -49,7 +55,7 @@ public class game extends JFrame implements ActionListener
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("장애물 피하기");
-        setLocation(500,400);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.BLACK);
         
@@ -81,6 +87,16 @@ public class game extends JFrame implements ActionListener
 				if((PLAYER_Y <= OBSTACLE_Y+OBSTACLE_HEIGHT) //게임 오버
 						&&((((OBSTACLE_X1+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X1<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X1)&&(OBSTACLE_X1>=PLAYER_X)))
 						|| (((OBSTACLE_X2+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X2<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X2)&&(OBSTACLE_X2>=PLAYER_X))))) {
+					try
+					{
+						 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("333785__projectsu012__8-bit-failure-sound.wav"));
+				            Clip clip = AudioSystem.getClip();
+				            clip.open(stream);
+				            clip.start();
+					}
+					catch (Exception ex)
+					{
+					} 
 					m_timer.cancel();
 					if(bestScore < point)
 						bestScore = point;
@@ -119,6 +135,16 @@ public class game extends JFrame implements ActionListener
             else if(result == JOptionPane.NO_OPTION);
         }
         else if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) { //초기값으로 변경.
+        	try
+			{
+				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("341695__projectsu012__coins-1.wav"));
+		            Clip clip = AudioSystem.getClip();
+		            clip.open(stream);
+		            clip.start();
+			}
+			catch (Exception ex)
+			{
+			} 
         	leftButton.setText("<=");
         	rightButton.setText("=>");
         	PLAYER_X = 10;
