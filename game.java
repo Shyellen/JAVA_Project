@@ -20,20 +20,22 @@ public class game extends JFrame implements ActionListener
 	public static final int PLAYER_WIDTH = 50;
 	public static final int PLAYER_HEIGHT = 50;
 	public static final int MOVE = 20;
-	public static int PLAYER_X = 10;
-	public static int PLAYER_Y = 350-PLAYER_HEIGHT;
+	
+	public static int PLAYER_X = 10; //10 <= PLAYER_X <= WINDOW_WIDTH-10
+	public static int PLAYER_Y = WINDOW_HEIGHT-50-PLAYER_HEIGHT; //50 = 상단바+하단 버튼 패널
 	public static int OBSTACLE_X1 = 30;
 	public static int OBSTACLE_X2 = 200;
-	public static int OBSTACLE_Y = 0;
+	public static int OBSTACLE_Y = 0; // OBSTACLE_Y <= PLAYER_Y
 	public static long period = 500;
 	public static int point = 0;
 	
 	public JButton leftButton;
 	public JButton rightButton;
 	
-	public boolean start = false;
-	public boolean end = false;
+	public boolean start = false; //게임 시작 상태
+	public boolean end = false; //게임 오버 상태
 	
+
 	
 	public static void main(String[] args) {
 		game play = new game();
@@ -64,38 +66,34 @@ public class game extends JFrame implements ActionListener
 	
 	public void playing() {
 		double randomValue = Math.random();
-		OBSTACLE_X1 = (int)(randomValue * 340)+10;
-		while((OBSTACLE_X1 - OBSTACLE_X2 < 70 && OBSTACLE_X1 - OBSTACLE_X2 > 0)|| (OBSTACLE_X1 - OBSTACLE_X2 < 70 && OBSTACLE_X2 - OBSTACLE_X1 < 70)) {
+		OBSTACLE_X1 = (int)(randomValue * (WINDOW_WIDTH-10-OBSTACLE_WIDTH))+10; //random 최소값은 10(맨 왼쪽), 최대값은 WINDOW_WIDTH-10에서 OBSTACLE_WIDTH를 뺀 값.(맨 오른쪽)
+		while(!(OBSTACLE_X1 - OBSTACLE_X2 > PLAYER_WIDTH+20 || (OBSTACLE_X1 - OBSTACLE_X2)*(-1) > PLAYER_WIDTH+20)) {
 			randomValue = Math.random();
-			OBSTACLE_X2 = (int)(randomValue * 340)+10;
+			OBSTACLE_X2 = (int)(randomValue * (WINDOW_WIDTH-10-OBSTACLE_WIDTH))+10;
 		}
 		
 		Timer m_timer = new Timer();
 		TimerTask m_task = new TimerTask() {
 			public void run() {
-				if((PLAYER_Y <= OBSTACLE_Y+50)
-						&&((((OBSTACLE_X1+50>=PLAYER_X)&&(OBSTACLE_X1<=PLAYER_X)||(PLAYER_X+50 >= OBSTACLE_X1)&&(OBSTACLE_X1>=PLAYER_X)))
-						|| (((OBSTACLE_X2+50>=PLAYER_X)&&(OBSTACLE_X2<=PLAYER_X)||(PLAYER_X+50 >= OBSTACLE_X2)&&(OBSTACLE_X2>=PLAYER_X))))) {
+				if((PLAYER_Y <= OBSTACLE_Y+OBSTACLE_HEIGHT) //게임 오버
+						&&((((OBSTACLE_X1+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X1<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X1)&&(OBSTACLE_X1>=PLAYER_X)))
+						|| (((OBSTACLE_X2+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X2<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X2)&&(OBSTACLE_X2>=PLAYER_X))))) {
 					m_timer.cancel();
 					start = false;
 					end = true;
 					repaint();
 				}
-				else if(OBSTACLE_Y >= 300) {
-					double randomValue = Math.random();
-					OBSTACLE_X1 = (int)(randomValue * 340)+10;
-					randomValue = Math.random();
-					OBSTACLE_X2 = (int)(randomValue * 340)+10;
-					OBSTACLE_Y = 0;
-					period -= 25;
-					point += 25;
-					if(period <= 75)
+				else if(OBSTACLE_Y >= WINDOW_HEIGHT-50-OBSTACLE_HEIGHT) { //현 장애물이 바닥에 닿았을 경우
+					OBSTACLE_Y = 0; //장애물 위치 맨 위로
+					period -= 25; //속도 증가
+					if(period <= 50) //최저 속도는 50
 						period = 50;
-					m_timer.cancel();
-					playing();
+					point += 25; //점수 상승
+					m_timer.cancel(); //타이머 중지
 					repaint();
+					playing(); //재시작
 				}
-				else {
+				else { //OBSTACLE이 하강함.
 					OBSTACLE_Y += 30;
 					repaint();
 				}
@@ -114,7 +112,6 @@ public class game extends JFrame implements ActionListener
         	leftButton.setText("<=");
         	rightButton.setText("=>");
         	PLAYER_X = 10;
-        	OBSTACLE_X1 = 10;
         	OBSTACLE_Y = 0;
         	point = 0;
         	period = 500;
@@ -124,8 +121,8 @@ public class game extends JFrame implements ActionListener
         	playing();
         }
         else if ((actionCommand.equals("=>"))) {
-        	if(PLAYER_X >= 320)
-        		PLAYER_X = 340;
+        	if(PLAYER_X >= WINDOW_WIDTH - 10 - PLAYER_WIDTH - MOVE)
+        		PLAYER_X = WINDOW_WIDTH - 10 - PLAYER_WIDTH;
         	else
         		PLAYER_X += MOVE;	
             repaint();
@@ -144,21 +141,19 @@ public class game extends JFrame implements ActionListener
         super.paint(g);
         
         if(start == true) {
-        	 g.setColor(Color.BLUE);
-             g.fillRect(PLAYER_X, PLAYER_Y, PLAYER_WIDTH, PLAYER_HEIGHT);
+        	g.setColor(Color.BLUE);
+            g.fillRect(PLAYER_X, PLAYER_Y, PLAYER_WIDTH, PLAYER_HEIGHT);
              
         	g.setColor(Color.RED);
         	g.fillRect(OBSTACLE_X1, OBSTACLE_Y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
         	g.fillRect(OBSTACLE_X2, OBSTACLE_Y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
         	
-        	
-        	
         	g.setColor(Color.BLUE);
-            g.drawString(point+"점", 30, 375);
+            g.drawString(point+"점", 30, WINDOW_HEIGHT-25);
         }
         else if (end == true) {
         	g.setColor(Color.WHITE);
-            g.drawString(point+"점", 10, 50);
+            g.drawString("이번점수: " + point+"점", 10, 50);
             leftButton.setText("재시작");
             rightButton.setText("끝내기");
         }
