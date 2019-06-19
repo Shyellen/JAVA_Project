@@ -95,6 +95,7 @@ public class game extends JFrame implements ActionListener
         leftButton.addKeyListener(lis); // 안넣어주면 keylistner 가 안돌아감.... 포커스 문제인듯
         leftButton.setBackground(Color.BLACK); //초기 컬러설정
         leftButton.setForeground(Color.WHITE); // 글자색
+        leftButton.setFocusPainted(false);
         leftButton.setBorderPainted(false); // 버튼 테두리 지움
         
         buttonPanel.add(leftButton);
@@ -105,6 +106,7 @@ public class game extends JFrame implements ActionListener
         rightButton.addKeyListener(lis);
         rightButton.setBackground(Color.BLACK);
         rightButton.setForeground(Color.WHITE);
+        rightButton.setFocusPainted(false);
         rightButton.setBorderPainted(false);
         buttonPanel.add(rightButton);
         
