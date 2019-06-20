@@ -1,4 +1,3 @@
-
 import java.io.File; // 파일 불러오기
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -292,14 +291,18 @@ public class game extends JFrame implements ActionListener
         			if(PLAYER_X >= WINDOW_WIDTH - 10 - PLAYER_WIDTH - MOVE)
         				PLAYER_X = WINDOW_WIDTH - 10 - PLAYER_WIDTH;
         			else
-        				PLAYER_X += MOVE;	
+        				PLAYER_X += MOVE;
+        			rightButton.setBackground(Color.WHITE);
+        	        rightButton.setForeground(Color.BLACK);
         			repaint();
         		}
         		if( e.getKeyCode() == 37 ) { // 왼쪽(37), <=키와 동일
         			if(PLAYER_X <= MOVE+10)
                 		PLAYER_X = 10;
                 	else
-                		PLAYER_X -= MOVE;	
+                		PLAYER_X -= MOVE;
+        			leftButton.setBackground(Color.WHITE);
+        	        leftButton.setForeground(Color.BLACK);
                     repaint();
         		}
         	}
@@ -307,7 +310,16 @@ public class game extends JFrame implements ActionListener
 
         @Override
         public void keyReleased(KeyEvent e) {
-            // TODO Auto-generated method stub
+        	if( e.getKeyCode() == 39 ) { // 오른쪽 (39), =>키와 동일
+    			rightButton.setBackground(Color.BLACK);
+    	        rightButton.setForeground(Color.WHITE);
+    			repaint();
+    		}
+    		if( e.getKeyCode() == 37 ) { // 왼쪽(37), <=키와 동일
+    			leftButton.setBackground(Color.BLACK);
+    	        leftButton.setForeground(Color.WHITE);
+                repaint();
+    		}
         }
 
         @Override
