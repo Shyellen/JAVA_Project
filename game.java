@@ -52,11 +52,8 @@ public class game extends JFrame implements ActionListener
 	
 	public JLabel title; // title에 title 이미지 삽입, 게임 시작 후 지우기위해 위로 뺌
 	
-	public static final int POINT_SIZE = 40; // 게임 오버 페이지
-	private String theText = "GAME OVER";
-    private Color penColor = Color.RED;
     private Font fontObject1 = 
-                      new Font("SansSerif", Font.PLAIN, POINT_SIZE);
+                      new Font("SansSerif", Font.PLAIN, 40);
     private Font fontObject2 = 
             new Font("돋움", Font.PLAIN, 20);
 	
@@ -76,7 +73,7 @@ public class game extends JFrame implements ActionListener
         
         setResizable(false); // 창 크기 고정
         
-        ImageIcon ic1  = new ImageIcon("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\title.png"); // title 이미지를 image icon으로 가져옴,
+        ImageIcon ic1  = new ImageIcon("title.png"); // title 이미지를 image icon으로 가져옴,
         title  = new JLabel(ic1); // 위에 빼놓은 title 라벨에 집어넣음
   
         add(title, BorderLayout.CENTER);
@@ -131,7 +128,7 @@ public class game extends JFrame implements ActionListener
 						|| (((OBSTACLE_X2+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X2<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X2)&&(OBSTACLE_X2>=PLAYER_X))))) {
 					try
 					{
-						 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\333785__projectsu012__8-bit-failure-sound.wav"));
+						 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("333785__projectsu012__8-bit-failure-sound.wav"));
 				            Clip clip = AudioSystem.getClip();
 				            clip.open(stream);
 				            clip.start();
@@ -181,7 +178,7 @@ public class game extends JFrame implements ActionListener
         {
         	remove(title); // 처음 타이틀 이미지가 들어있는 라벨 지움
         	
-        	ImageIcon ic2  = new ImageIcon("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\play.png"); // 플레이 중 백그라운드 만들기.
+        	ImageIcon ic2  = new ImageIcon("play.png"); // 플레이 중 백그라운드 만들기.
             JLabel back  = new JLabel(ic2); // 저기 아래 게임시작||재시작에 넣으면 투명도가 겹쳐져서 따로 게임시작에만 넣어줌
       
             add(back, BorderLayout.CENTER);
@@ -189,7 +186,7 @@ public class game extends JFrame implements ActionListener
         if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) { //초기값으로 변경.
         	try // 시작할때 브금 띠롱
 			{
-				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\341695__projectsu012__coins-1.wav"));
+				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("341695__projectsu012__coins-1.wav"));
 		            Clip clip = AudioSystem.getClip();
 		            clip.open(stream);
 		            clip.start();
@@ -246,8 +243,8 @@ public class game extends JFrame implements ActionListener
         else if (end == true) {
         	super.paint(g);
             g.setFont(fontObject1);
-            g.setColor(penColor);
-            g.drawString(theText, 80, 200);
+            g.setColor(Color.RED);
+            g.drawString("GAME OVER", 80, 200);
         	g.setColor(Color.WHITE);
         	g.setFont(fontObject2);
             g.drawString("이번점수: " + point+"점", 135, 240);
