@@ -70,13 +70,13 @@ public class game extends JFrame implements ActionListener
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("장애물 피하기");
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // 창 중앙에 띄우기
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.BLACK);
         
         setResizable(false); // 창 크기 고정
         
-        ImageIcon ic1  = new ImageIcon("title.png"); // title 이미지를 image icon으로 가져옴,
+        ImageIcon ic1  = new ImageIcon("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\title.png"); // title 이미지를 image icon으로 가져옴,
         title  = new JLabel(ic1); // 위에 빼놓은 title 라벨에 집어넣음
   
         add(title, BorderLayout.CENTER);
@@ -84,8 +84,8 @@ public class game extends JFrame implements ActionListener
        JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         
-        MyMouseListener listener = new MyMouseListener();    // mouselistner를 사용하기위해 추가
-        key lis = new key();  // keylistner 사용위해 추가
+        MyMouseListener listener = new MyMouseListener();    // mouselistener를 사용하기위해 추가
+        key lis = new key();  // keylistener 사용위해 추가
         
         addKeyListener(lis);
         
@@ -95,7 +95,7 @@ public class game extends JFrame implements ActionListener
         leftButton.addKeyListener(lis); // 안넣어주면 keylistner 가 안돌아감.... 포커스 문제인듯
         leftButton.setBackground(Color.BLACK); //초기 컬러설정
         leftButton.setForeground(Color.WHITE); // 글자색
-        leftButton.setFocusPainted(false);
+        leftButton.setFocusPainted(false); // 버튼 내용 테두리 지움
         leftButton.setBorderPainted(false); // 버튼 테두리 지움
         
         buttonPanel.add(leftButton);
@@ -131,7 +131,7 @@ public class game extends JFrame implements ActionListener
 						|| (((OBSTACLE_X2+OBSTACLE_WIDTH>=PLAYER_X)&&(OBSTACLE_X2<=PLAYER_X)||(PLAYER_X+PLAYER_WIDTH >= OBSTACLE_X2)&&(OBSTACLE_X2>=PLAYER_X))))) {
 					try
 					{
-						 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("333785__projectsu012__8-bit-failure-sound.wav"));
+						 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\333785__projectsu012__8-bit-failure-sound.wav"));
 				            Clip clip = AudioSystem.getClip();
 				            clip.open(stream);
 				            clip.start();
@@ -181,7 +181,7 @@ public class game extends JFrame implements ActionListener
         {
         	remove(title); // 처음 타이틀 이미지가 들어있는 라벨 지움
         	
-        	ImageIcon ic2  = new ImageIcon("play.png"); // 플레이 중 백그라운드 만들기.
+        	ImageIcon ic2  = new ImageIcon("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\play.png"); // 플레이 중 백그라운드 만들기.
             JLabel back  = new JLabel(ic2); // 저기 아래 게임시작||재시작에 넣으면 투명도가 겹쳐져서 따로 게임시작에만 넣어줌
       
             add(back, BorderLayout.CENTER);
@@ -189,7 +189,7 @@ public class game extends JFrame implements ActionListener
         if (actionCommand.equals("게임시작") || actionCommand.equals("재시작")) { //초기값으로 변경.
         	try // 시작할때 브금 띠롱
 			{
-				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("341695__projectsu012__coins-1.wav"));
+				 AudioInputStream stream = AudioSystem.getAudioInputStream(new File("C:\\Users\\Owner\\Downloads\\자바\\Java_Project\\src\\341695__projectsu012__coins-1.wav"));
 		            Clip clip = AudioSystem.getClip();
 		            clip.open(stream);
 		            clip.start();
@@ -237,11 +237,11 @@ public class game extends JFrame implements ActionListener
         	g.fillRect(OBSTACLE_X1, OBSTACLE_Y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
         	g.fillRect(OBSTACLE_X2, OBSTACLE_Y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
         	
-        	g.setColor(Color.BLUE);
-            g.drawString(point+"점", 30, WINDOW_HEIGHT-25);
+        	g.setColor(Color.GRAY);
+            g.drawString(point+"점", 30, WINDOW_HEIGHT-17);
             
-            g.setColor(Color.BLUE);
-            g.drawString("BEST SCORE: " + bestScore+"점", 270, WINDOW_HEIGHT-25);
+            g.setColor(Color.GRAY);
+            g.drawString("BEST SCORE: " + bestScore+"점", 270, WINDOW_HEIGHT-17);
         }
         else if (end == true) {
         	super.paint(g);
