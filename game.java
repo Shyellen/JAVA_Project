@@ -52,7 +52,7 @@ public class game extends JFrame implements ActionListener
 	public JLabel title; // title에 title 이미지 삽입, 게임 시작 후 지우기위해 위로 뺌
 	
     private Font fontObject1 = 
-                      new Font("SansSerif", Font.PLAIN, 40);
+                      new Font("SansSerif", Font.BOLD, 50);
     private Font fontObject2 = 
             new Font("돋움", Font.PLAIN, 20);
 	
@@ -243,11 +243,11 @@ public class game extends JFrame implements ActionListener
         	super.paint(g);
             g.setFont(fontObject1);
             g.setColor(Color.RED);
-            g.drawString("GAME OVER", 80, 200);
+            g.drawString("GAME OVER", 50, 200);
         	g.setColor(Color.WHITE);
         	g.setFont(fontObject2);
             g.drawString("이번점수: " + point+"점", 135, 240);
-            g.drawString("최고점수: " + bestScore+"점", 135, 260);
+            g.drawString("최고점수: " + bestScore+"점", 135, 265);
             leftButton.setText("재시작");
             rightButton.setText("끝내기");
         }
@@ -313,12 +313,10 @@ public class game extends JFrame implements ActionListener
         	if( e.getKeyCode() == 39 ) { // 오른쪽 (39), =>키와 동일
     			rightButton.setBackground(Color.BLACK);
     	        rightButton.setForeground(Color.WHITE);
-    			repaint();
     		}
     		if( e.getKeyCode() == 37 ) { // 왼쪽(37), <=키와 동일
     			leftButton.setBackground(Color.BLACK);
     	        leftButton.setForeground(Color.WHITE);
-                repaint();
     		}
         }
 
